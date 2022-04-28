@@ -1,9 +1,6 @@
-#### Slide 1
-Observability of Operator and the Operand
+#### Observability of Operator and the Operand
 
 Metrics and Alert
-
-By default, controller-runtime builds a global prometheus registry and publishes a colletion of performance metrics for each controller.
 
 Custom Operator metrics
 - operand upgrade counter
@@ -13,14 +10,16 @@ Operand metrics
 - http://bestie-route-bestie.apps.rose.opdev.io/metrics
 
 ---
-#### Slide 1.2
+#### Prometheus
 
-Store metrics ?
-Prometheus is the answer.
-Included in the Openshift platform
-Prometheus Golang client 
+- By default, controller-runtime builds a global prometheus registry and publishes a colletion of performance metrics for each controller.
+ 
+- Included in the Openshift platform
 
-#### Slide 2
+- Prometheus Golang client 
+
+#### Operator servicemonitor
+
 Create a servicemonitor for the Operator ( we get this for free with OperatorSDK framwork ) in the same namespace.
 
 oc get servicemonitor
@@ -28,7 +27,7 @@ NAME                                             AGE
 l5-operator-controller-manager-metrics-monitor   ---
 
 ---
-#### Slide 3
+#### Clusterrole and ClusterroleBinding
 
 Create a ClusterRole, and a ClusterRoleBinding to bind the ServiceAccount, prometheus-k8s in the openshift-monitoring to the ClusterRole.
 
@@ -69,9 +68,13 @@ subjects:
     namespace: openshift-monitoring
 ---
 
-#### Slide 4
+#### Label namespace
 
-Custom metrics
+Set the labels for the namespace that you want to scrape, which enables OpenShift cluster monitoring for that namespace:
+
+oc label namespace <operator_namespace> openshift.io/cluster-monitoring="true"
+
+#### Custom metrics
 
 1. Initialize
 Best Practice Tip: We prefix the metric with the Operator-name_
@@ -93,9 +96,7 @@ func init() {
 3. Create a metric counter
 applicationUpgradeCounter.Inc()
 
-#### Slide 5
-
-Operand metrics
+#### Operand metrics
 
 1. Bestie Application create /metrics path
 
@@ -140,8 +141,8 @@ spec:
 
 ---
 
-#### Slide 6
-Alert
+#### Alert
+
 
 prometheusrule.yaml
 
