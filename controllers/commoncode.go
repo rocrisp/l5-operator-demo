@@ -138,10 +138,9 @@ func (r *BestieReconciler) upgradeOperand(ctx context.Context, bestie *petsv1.Be
 	bestieImageDifferent := !reflect.DeepEqual(dp.Spec.Template.Spec.Containers[0].Image, getBestieContainerImage(bestie))
 
 	if bestieImageDifferent {
-		if bestieImageDifferent {
-			log.Info("Upgrade Operand")
-			dp.Spec.Template.Spec.Containers[0].Image = getBestieContainerImage(bestie)
-		}
+		log.Info("Upgrade Operand")
+		dp.Spec.Template.Spec.Containers[0].Image = getBestieContainerImage(bestie)
+
 		err = r.Client.Update(ctx, dp)
 		if err != nil {
 			log.Error(err, "Deployment failed.")

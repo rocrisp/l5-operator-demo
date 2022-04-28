@@ -35,6 +35,7 @@ spec:
             description: BestieSpec defines the desired state of Bestie.
             properties:
               image:
+                description: The bestie app image
                 type: string
               maxReplicas:
                 description: MaxReplicas sets an upper bound to the autoscaling feature.
@@ -43,19 +44,27 @@ spec:
                 type: integer
               replicas:
                 description: Replicas is the number of pod instances for Bestie Deployment
+                  if using the autoscaling feature
+                format: int32
+                type: integer
+              size:
+                description: The size of the deployment
                 format: int32
                 type: integer
               version:
+                description: The bestie app version
                 type: string
             required:
             - size
             type: object
           status:
-            description: BestieStatus defines the observed state of Bestie
+            description: BestieStatus defines the observed state of Bestie.
             properties:
               appversion:
+                description: Current version deployed
                 type: string
               podstatus:
+                description: List of pods, their status and the image they use
                 items:
                   type: string
                 type: array

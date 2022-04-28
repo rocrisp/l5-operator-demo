@@ -12,38 +12,44 @@ metadata:
           },
           "spec": {
             "image": "quay.io/mkong/bestiev2",
-            "maxReplicas": 10,
-            "size": 3,
-            "version": "1.3"
+            "size": 5,
+            "version": "1.2"
           }
         }
       ]
-    capabilities: Basic Install
-    operators.operatorframework.io/builder: operator-sdk-v1.15.0+git
+    capabilities: Full Lifecycle
+    certified: "false"
+    description: L5 Operator is a demo operator that aims to exhibits level 5 capabilities for web applications.
+    operators.operatorframework.io/builder: operator-sdk-v1.16.0
     operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
-  name: l5-operator.v0.0.1
+    repository: https://github.com/opdev/l5-operator-demo
+    support: L5
+  name: l5-operator.v0.0.3
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
-    - description: Bestie is the Schema for the besties API.
+    - description: Bestie is the Schema for the besties API
       displayName: Bestie
       kind: Bestie
       name: besties.pets.bestie.com
       version: v1
   description: |
     ## Usage
+
     The L5 operator expects that a certificate manager is already available for usage. If a certificate manager
     is not installed, please install a certificate manager for the operator to function as intended.
+
     The L5 operator is compatible with both Kubernetes and OpenShift clusters, but with Kuberenetes please ensure that an
     ingress controller is installed for the ingress to work properly.
+
     The L5 operator works alongside the Crunchy Data PostgreSQL operator. Before installing the L5 operator, we highly encourage
     you to install the Crunchy Data PostgreSQL operator beforehand. You can easily install the Crunchy Data PostgreSQL operator
     via the OpenShift Container Platform when running on an OpenShift cluster or you can follow the directions [here](https://access.crunchydata.com/documentation/postgres-operator/4.7.5/installation/postgres-operator/)
     provided by the Crunchy Data team to install the Crunchy Data PostgreSQL operator, if you are running your application on a
     vanilla Kubernetes cluster.
-    
+
     See the documentation and examples on [github](https://github.com/opdev/l5-operator-demo) for more information.
   displayName: L5 Operator
   icon:
@@ -75,18 +81,6 @@ spec:
           - replicasets
           verbs:
           - '*'
-        - apiGroups:
-          - autoscaling
-          resources:
-          - horizontalpodautoscalers
-          verbs:
-          - create
-          - delete
-          - get
-          - list
-          - patch
-          - update
-          - watch
         - apiGroups:
           - batch
           resources:
@@ -254,9 +248,9 @@ spec:
         serviceAccountName: l5-operator-controller-manager
     strategy: deployment
   installModes:
-  - supported: false
+  - supported: true
     type: OwnNamespace
-  - supported: false
+  - supported: true
     type: SingleNamespace
   - supported: false
     type: MultiNamespace
@@ -274,4 +268,4 @@ spec:
   provider:
     name: Provider Name
     url: https://your.domain
-  version: 0.0.1
+  version: 0.0.3
